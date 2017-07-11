@@ -39,6 +39,17 @@ class RedisConnector(val host: String, val port: Int, val password: String?, val
         }
     }
 
+    fun listen(){
+        val thread = Thread {
+            get().use {
+                it.psubscribe(RedisHandler(), "action:*")
+            }
+        }
+        thread.name = "Redis PubSub listener"
+        thread.isDaemon = true
+        thread.start()
+    }
+
     fun publish(message: Message) {
         val author = message.member.effectiveName
         val content = message.content

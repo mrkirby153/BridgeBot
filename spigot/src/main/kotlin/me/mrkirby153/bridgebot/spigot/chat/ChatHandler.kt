@@ -3,6 +3,7 @@ package me.mrkirby153.bridgebot.spigot.chat
 import me.mrkirby153.bridgebot.spigot.Bridge
 import net.md_5.bungee.api.ChatColor
 import org.bukkit.Bukkit
+import org.json.JSONArray
 import org.json.JSONObject
 
 
@@ -38,6 +39,8 @@ object ChatHandler {
             val action = data.getString("action")
             if (action == "playercount") {
                 val obj = JSONObject()
+                obj.put("action", "playercount_resp")
+                obj.put("players", JSONArray())
                 Bukkit.getOnlinePlayers().forEach {
                     obj.append("players", it.name)
                 }

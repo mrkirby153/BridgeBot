@@ -8,7 +8,7 @@ object Bot {
 
     private val properties = File("config.properties").createFileIfNotExist().readProperties()
 
-    private lateinit var bot: BridgeBot
+    lateinit var bot: BridgeBot
 
     @JvmStatic fun main(args: Array<String>) {
         bot = BridgeBot(properties)
