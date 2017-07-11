@@ -17,3 +17,6 @@ include 'services:webservice'
 
 rootProject.name = 'DiscordBridgeBot'
 include 'discord', 'spigot'
+
+project(":discord").name = 'DiscordBridgeBot-discord'
+project(":spigot").name = 'DiscordBridgeBot-spigot'
