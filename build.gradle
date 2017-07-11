@@ -1,0 +1,35 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.4'
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'maven'
+    apply plugin: 'com.github.johnrengelman.shadow'
+
+    group = 'me.mrkirby153.bridgebot'
+    version = '1.0-SNAPSHOT'
+
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+
+    repositories {
+        mavenCentral()
+    }
+
+    configurations {
+        compile.extendsFrom shadow
+        compile.extendsFrom kapt
+    }
+
+    shadowJar{
+        classifier = null
+        configurations = [project.configurations.shadow]
+    }
+}
