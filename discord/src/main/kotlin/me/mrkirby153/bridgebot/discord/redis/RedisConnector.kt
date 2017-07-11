@@ -29,7 +29,8 @@ class RedisConnector(val host: String, val port: Int, val password: String?, val
     }
 
     fun get(): Jedis = jedisPool.resource.apply {
-        select(this@RedisConnector.db)
+        if (this.db.toInt() != this@RedisConnector.db)
+            select(this@RedisConnector.db)
     }
 
     fun publish(channel: String, message: String) {
@@ -42,7 +43,7 @@ class RedisConnector(val host: String, val port: Int, val password: String?, val
         val author = message.member.effectiveName
         val content = message.content
 
-        val json = JSONObject().append("author", author).append("content", content)
+        val json = JSONObject().put("author", author).put("content", content)
         publish("$CHANNEL_BASE:${message.guild.id}.${message.channel.id}", json.toString())
     }
 }
