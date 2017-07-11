@@ -1,4 +1,8 @@
 package me.mrkirby153.bridgebot.discord
 
-class Bot {
+object Bot {
+
+    @JvmStatic fun main(args:Array<String>) {
+
+    }
 }

@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+    shadow "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
 
 }
 
@@ -33,6 +33,9 @@ buildscript {
 }
 
 apply plugin: 'kotlin'
+apply plugin: 'application'
+
+mainClassName = 'me.mrkirby153.bridgebot.discord.Bot'
 
 compileKotlin {
     kotlinOptions {
