@@ -8,3 +8,5 @@ build/
 spigot/run/
 
 \.gradle/
+
+discord/run/
