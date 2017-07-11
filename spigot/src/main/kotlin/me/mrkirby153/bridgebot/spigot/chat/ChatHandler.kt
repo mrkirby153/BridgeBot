@@ -31,8 +31,20 @@ object ChatHandler {
         }
     }
 
-    fun process(server: String, channel: String, data: JSONObject){
+    fun process(server: String, channel: String, data: JSONObject) {
         val channelSettings = this.channels["$server.$channel"] ?: return
+
+        if (data.has("action")) {
+            val action = data.getString("action")
+            if (action == "playercount") {
+                val obj = JSONObject()
+                Bukkit.getOnlinePlayers().forEach {
+                    obj.append("players", it.name)
+                }
+                plugin.redisConnector.publish("action:$server.$channel", obj.toString())
+            }
+            return
+        }
 
         val message = buildString {
             append(ChatColor.WHITE)

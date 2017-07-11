@@ -7,7 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin
 class Bridge : JavaPlugin() {
 
 
-    private lateinit var redisConnector: RedisConnector
+    lateinit var redisConnector: RedisConnector
 
     override fun onEnable() {
         saveDefaultConfig()

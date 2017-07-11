@@ -17,14 +17,6 @@ class RedisHandler : JedisPubSub() {
 
         val json = JSONObject(JSONTokener(message))
 
-        if(json.has("action")){
-            val action = json.getString("action")
-            if(action == "playercount"){
-                // Construct playercount
-            }
-            return
-        }
-
         ChatHandler.process(server, chan, json)
     }
 }
