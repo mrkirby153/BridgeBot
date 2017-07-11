@@ -1,0 +1,32 @@
+# ==================
+#
+# Channels to broadcast messages to.
+#
+# prefix:       The prefix in chat
+# nameColor:   The color of the usernames from Discord
+# nameFormat:  The format of names. "%s" will be replaced with the discord name
+# text_color:   The color of the message
+# server:       The server to listen on
+# channel:      The channel to listen on
+# webhook:      The webhook for outgoing message mirroring
+#
+# ===================
+channels:
+  default:
+    prefix: ''
+    name_color: "WHITE"
+    name_format: "<%s> "
+    text_color: "WHITE"
+    server: "000000000"
+    channel: "0000000000"
+    webhook: ""
+
+# ===========
+#
+# Connection to the redis server for incoming message relaying
+#
+# ===========
+redis:
+  host: localhost
+  port: 6379
+  password: ''

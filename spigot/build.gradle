@@ -20,14 +20,15 @@ repositories {
 
 dependencies {
     compile 'org.spigotmc:spigot-api:1.12-R0.1-SNAPSHOT'
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+    shadow "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
 }
 
-processResources {
+/*processResources {
+    exclude 'config.yml'
     from(sourceSets.main.resources.srcDirs) {
         expand 'version': project.version
     }
-}
+}*/
 
 task copyJar(type: Copy){
     from jar
