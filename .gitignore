@@ -10,3 +10,5 @@ spigot/run/
 \.gradle/
 
 discord/run/
+
+classes/
