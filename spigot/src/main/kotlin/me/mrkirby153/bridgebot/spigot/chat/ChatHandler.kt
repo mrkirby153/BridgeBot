@@ -24,9 +24,9 @@ object ChatHandler {
             val textColor = ChatColor.valueOf(cfg.getString("channels.$key.text_color"))
             val server = cfg.getString("channels.$key.server")
             val channel = cfg.getString("channels.$key.channel")
-            val webhook = cfg.getString("channels.$key.webhook")
+            val twoWay = cfg.getBoolean("channels.$key.twoWay")
 
-            val chan = Channel(prefix, nameColor, nameFormat, textColor, server, channel, webhook)
+            val chan = Channel(prefix, nameColor, nameFormat, textColor, server, channel, twoWay)
             plugin.logger.info("Loaded channel $chan")
             channels["$server.$channel"] = chan
         }
@@ -50,18 +50,22 @@ object ChatHandler {
         }
 
         val message = buildString {
-            append(ChatColor.WHITE)
-            append(channelSettings.prefix)
             append(channelSettings.nameColor)
+            append(channelSettings.prefix)
             append(channelSettings.nameFormat.format(data.optString("author")))
             append(channelSettings.textColor)
             append(data.optString("content"))
         }
 
-        Bukkit.broadcastMessage(message)
+        if (Bukkit.getOnlinePlayers().isNotEmpty())
+            Bukkit.broadcastMessage(message)
+    }
+
+    fun getChannels(): Collection<Channel> {
+        return this.channels.values
     }
 
 
     data class Channel(val prefix: String, val nameColor: ChatColor, val nameFormat: String, val textColor: ChatColor,
-                       val server: String, val channel: String, val webhook: String)
+                       val server: String, val channel: String, val twoWay: Boolean)
 }

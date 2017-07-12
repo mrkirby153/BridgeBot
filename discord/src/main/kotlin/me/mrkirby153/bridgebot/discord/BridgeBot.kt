@@ -32,6 +32,8 @@ class BridgeBot(val properties: Properties) : ListenerAdapter() {
     override fun onMessageReceived(event: MessageReceivedEvent?) {
         if (event == null)
             return
+        if(event.author == jda.selfUser)
+            return
         if(event.message.rawContent == "%%shutdown" && event.author.id == this.owner) {
             event.message.channel.sendMessage("Shutting down... :wave:").complete()
             jda.shutdown()

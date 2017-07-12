@@ -1,5 +1,7 @@
 package me.mrkirby153.bridgebot.spigot.redis
 
+import org.bukkit.entity.Player
+import org.json.JSONObject
 import redis.clients.jedis.Jedis
 import redis.clients.jedis.JedisPool
 import redis.clients.jedis.JedisPoolConfig
@@ -46,5 +48,15 @@ class RedisConnector(val host: String, val port: Int, val password: String?, val
         thread.name = "Redis PubSub listener"
         thread.isDaemon = true
         thread.start()
+    }
+
+    fun sendChatMessage(server: String, channel: String, author: Player?, message: String) {
+        val obj = JSONObject().apply {
+            if (author != null)
+                put("author", author.name)
+            put("message", message)
+            put("from_mc", true)
+        }
+        publish("$CHANNEL_BASE:$server.$channel", obj.toString())
     }
 }

@@ -8,7 +8,7 @@ import redis.clients.jedis.JedisPubSub
 class RedisHandler() : JedisPubSub() {
 
     override fun onPMessage(pattern: String, channel: String, message: String) {
-        if (!channel.startsWith("action"))
+        if (!(channel.startsWith("action") || channel.startsWith("bridge")))
             return
         val encodedServer = channel.split(":")[1]
         val split = encodedServer.split(".")
@@ -16,29 +16,41 @@ class RedisHandler() : JedisPubSub() {
         val chan = split[1]
 
         val json = JSONObject(JSONTokener(message))
-        if (!json.has("action"))
-            return
+        if(channel.startsWith("action")) {
+            if (!json.has("action"))
+                return
 
-        val action = json.getString("action")
+            val action = json.getString("action")
 
-        when (action) {
-            "playercount_resp" -> {
-                val players = json.getJSONArray("players")
-                Bot.bot.jda.getGuildById(server)?.getTextChannelById(chan)?.sendMessage(buildString {
-                    append("Online Players ")
-                    append("(${players.length()}): ")
-                    if(players.length() > 0)
-                        append("`")
-                    append(buildString {
-                        players.forEach { player ->
-                            append("$player, ")
-                        }
-                    }.dropLast(2))
-                    if(players.length() > 0)
-                        append("`")
-                })?.queue()
+            when (action) {
+                "playercount_resp" -> {
+                    val players = json.getJSONArray("players")
+                    Bot.bot.jda.getGuildById(server)?.getTextChannelById(chan)?.sendMessage(buildString {
+                        append("Online Players ")
+                        append("(${players.length()}): ")
+                        if (players.length() > 0)
+                            append("`")
+                        append(buildString {
+                            players.forEach { player ->
+                                append("$player, ")
+                            }
+                        }.dropLast(2))
+                        if (players.length() > 0)
+                            append("`")
+                    })?.queue()
+                }
             }
         }
-
+        if(channel.startsWith("bridge")){
+            if(!json.has("from_mc"))
+                return
+            val author = json.optString("author") ?: null
+            val m = json.getString("message")
+            Bot.bot.jda.getGuildById(server)?.getTextChannelById(chan)?.sendMessage(buildString {
+                if(author != null && author.isNotEmpty())
+                    append("**<$author>** ")
+                append(m)
+            })?.queue()
+        }
     }
 }

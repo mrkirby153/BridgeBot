@@ -42,7 +42,7 @@ class RedisConnector(val host: String, val port: Int, val password: String?, val
     fun listen(){
         val thread = Thread {
             get().use {
-                it.psubscribe(RedisHandler(), "action:*")
+                it.psubscribe(RedisHandler(), "action:*", "$CHANNEL_BASE:*")
             }
         }
         thread.name = "Redis PubSub listener"

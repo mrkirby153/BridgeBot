@@ -16,6 +16,8 @@ class RedisHandler : JedisPubSub() {
         val chan = split[1]
 
         val json = JSONObject(JSONTokener(message))
+        if(json.optBoolean("from_mc"))
+            return
 
         ChatHandler.process(server, chan, json)
     }

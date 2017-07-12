@@ -8,7 +8,7 @@
 # text_color:   The color of the message
 # server:       The server to listen on
 # channel:      The channel to listen on
-# webhook:      The webhook for outgoing message mirroring
+# twoWay:         True to send messages back to Discord
 #
 # ===================
 channels:
@@ -19,7 +19,7 @@ channels:
     text_color: "WHITE"
     server: "000000000"
     channel: "0000000000"
-    webhook: ""
+    twoWay: true
 
 # ===========
 #
