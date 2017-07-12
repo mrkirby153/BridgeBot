@@ -66,6 +66,11 @@ object ChatHandler {
         return this.channels.values
     }
 
+    fun reload(){
+        this.channels.clear()
+        this.loadChannels()
+    }
+
 
     data class Channel(val prefix: String, val nameColor: ChatColor, val nameFormat: String, val textColor: ChatColor,
                        val server: String, val channel: String, val twoWay: Boolean)

@@ -1,3 +1,6 @@
 name: DiscordBridge
 version: 1.0-SNAPSHOT
 main: me.mrkirby153.bridgebot.spigot.Bridge
+commands:
+  discordbridge:
+    usage: /discordbridge

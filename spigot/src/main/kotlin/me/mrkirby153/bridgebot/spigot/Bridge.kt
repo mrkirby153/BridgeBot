@@ -9,7 +9,7 @@ class Bridge : JavaPlugin() {
 
 
     lateinit var redisConnector: RedisConnector
-    
+
     override fun onEnable() {
         saveDefaultConfig()
 
@@ -24,6 +24,8 @@ class Bridge : JavaPlugin() {
         redisConnector.listen()
 
         server.pluginManager.registerEvents(ChatListener(this), this)
+
+        getCommand("discordbridge").executor = CommandDiscordBridge(this)
     }
 
     override fun onDisable() {
