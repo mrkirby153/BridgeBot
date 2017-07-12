@@ -51,8 +51,8 @@ object ChatHandler {
 
         val message = buildString {
             append(ChatColor.translateAlternateColorCodes('&', channelSettings.prefix))
-            append(channelSettings.nameColor)
             append(ChatColor.RESET)
+            append(channelSettings.nameColor)
             append(channelSettings.nameFormat.format(data.optString("author")))
             append(channelSettings.textColor)
             append(data.optString("content"))
