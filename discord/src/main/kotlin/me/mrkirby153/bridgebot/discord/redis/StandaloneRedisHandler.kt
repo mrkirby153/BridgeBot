@@ -1,11 +1,12 @@
 package me.mrkirby153.bridgebot.discord.redis
 
+import me.mrkirby153.bridgebot.discord.Bot
 import net.dv8tion.jda.core.JDA
 import org.json.JSONObject
 import org.json.JSONTokener
 import redis.clients.jedis.JedisPubSub
 
-class RedisHandler(private val jda: JDA) : JedisPubSub() {
+class StandaloneRedisHandler(private val jda: JDA) : JedisPubSub() {
 
     override fun onPMessage(pattern: String, channel: String, message: String) {
         if (!(channel.startsWith("action") || channel.startsWith("bridge")))
@@ -25,19 +26,10 @@ class RedisHandler(private val jda: JDA) : JedisPubSub() {
             when (action) {
                 "playercount_resp" -> {
                     val players = json.getJSONArray("players")
-                   jda.getGuildById(server)?.getTextChannelById(chan)?.sendMessage(buildString {
-                        append("Online Players ")
-                        append("(${players.length()}): ")
-                        if (players.length() > 0)
-                            append("`")
-                        append(buildString {
-                            players.forEach { player ->
-                                append("$player, ")
-                            }
-                        }.dropLast(2))
-                        if (players.length() > 0)
-                            append("`")
-                    })?.queue()
+                    val pList = mutableListOf<String>()
+                    players.forEach { pList.add(it.toString()) }
+                    val c = jda.getGuildById(server)?.getTextChannelById(chan) ?: return
+                    Bot.bot.sendPlayers(c, pList.toList())
                 }
             }
         }
@@ -46,11 +38,8 @@ class RedisHandler(private val jda: JDA) : JedisPubSub() {
                 return
             val author = json.optString("author") ?: null
             val m = json.getString("message")
-            jda.getGuildById(server)?.getTextChannelById(chan)?.sendMessage(buildString {
-                if(author != null && author.isNotEmpty())
-                    append("**<$author>** ")
-                append(m)
-            })?.queue()
+            val c = jda.getGuildById(server)?.getTextChannelById(chan) ?: return
+            Bot.bot.sendChatToDiscord(c, author, m)
         }
     }
 }

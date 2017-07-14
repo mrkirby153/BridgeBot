@@ -8,6 +8,7 @@ repositories {
         url = 'https://oss.sonatype.org/content/groups/public/'
     }
     mavenCentral()
+    jcenter()
 }
 repositories {
     maven {
@@ -19,6 +20,7 @@ repositories {
 }
 
 dependencies {
+    shadow project(":DiscordBridgeBot-discord_core")
     compile 'org.spigotmc:spigot-api:1.12-R0.1-SNAPSHOT'
     shadow "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
 }

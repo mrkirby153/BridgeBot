@@ -3,12 +3,12 @@ package me.mrkirby153.bridgebot.discord
 import net.dv8tion.jda.core.AccountType
 import net.dv8tion.jda.core.JDA
 import net.dv8tion.jda.core.JDABuilder
+import net.dv8tion.jda.core.entities.MessageChannel
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent
 import net.dv8tion.jda.core.hooks.ListenerAdapter
-import org.json.JSONObject
 import java.util.*
 
-class BridgeBot(val properties: Properties) : ListenerAdapter() {
+class BridgeBot(properties: Properties, val handler: BotHandler) : ListenerAdapter() {
 
     val jda: JDA
 
@@ -34,9 +34,30 @@ class BridgeBot(val properties: Properties) : ListenerAdapter() {
             return
         }
         if(event.message.rawContent.equals("%%list", true)){
-            val obj = JSONObject().put("action", "playercount")
-//            redis.publish("bridge:${event.guild.id}.${event.channel.id}", obj.toString())
+            handler.getPlayers(event.channel.id, event.guild.id)?.let {
+                sendPlayers(event.channel, it)
+            }
         }
-//        redis.publish(event.message)
+        handler.sendDiscordToMinecraft(event.channel.id, event.guild.id, event.member.effectiveName, event.message.content)
+    }
+
+    fun sendPlayers(channel: MessageChannel, players: List<String>){
+        channel.sendMessage(buildString {
+            append("Online Players ")
+            append("(${players.size})")
+            if(players.isNotEmpty()) {
+                append(": `")
+                append(players.joinToString(", "))
+                append("`")
+            }
+        }).queue()
+    }
+
+    fun sendChatToDiscord(channel: MessageChannel, author: String?, message: String){
+        channel.sendMessage(buildString {
+            if(author != null && author.isNotEmpty())
+                append("**<$author>** ")
+            append(message)
+        }).queue()
     }
 }
