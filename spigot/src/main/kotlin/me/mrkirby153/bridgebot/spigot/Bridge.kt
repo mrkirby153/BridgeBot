@@ -1,8 +1,9 @@
 package me.mrkirby153.bridgebot.spigot
 
+import me.mrkirby153.bridgebot.discord.redis.RedisConnector
 import me.mrkirby153.bridgebot.spigot.chat.ChatHandler
 import me.mrkirby153.bridgebot.spigot.chat.ChatListener
-import me.mrkirby153.bridgebot.spigot.redis.RedisConnector
+import me.mrkirby153.bridgebot.spigot.redis.SpigotDiscordHandler
 import org.bukkit.plugin.java.JavaPlugin
 
 class Bridge : JavaPlugin() {
@@ -21,7 +22,7 @@ class Bridge : JavaPlugin() {
         val redisPassword = config.getString("redis.password")
 
         redisConnector = RedisConnector(redisHost, redisPort, if (redisPassword.isEmpty()) null else redisPassword)
-        redisConnector.listen()
+        redisConnector.listen(SpigotDiscordHandler())
 
         server.pluginManager.registerEvents(ChatListener(this), this)
 

@@ -1,11 +1,11 @@
 package me.mrkirby153.bridgebot.discord.redis
 
-import net.dv8tion.jda.core.JDA
 import net.dv8tion.jda.core.entities.Message
 import org.json.JSONObject
 import redis.clients.jedis.Jedis
 import redis.clients.jedis.JedisPool
 import redis.clients.jedis.JedisPoolConfig
+import redis.clients.jedis.JedisPubSub
 
 class RedisConnector(val host: String, val port: Int, val password: String?, val db: Int = 0) {
 
@@ -40,10 +40,10 @@ class RedisConnector(val host: String, val port: Int, val password: String?, val
         }
     }
 
-    fun listen(jda: JDA){
+    fun listen(pubSub: JedisPubSub){
         val thread = Thread {
             get().use {
-                it.psubscribe(RedisHandler(jda), "action:*", "$CHANNEL_BASE:*")
+                it.psubscribe(pubSub, "action:*", "$CHANNEL_BASE:*")
             }
         }
         thread.name = "Redis PubSub listener"

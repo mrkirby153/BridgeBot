@@ -1,6 +1,5 @@
 package me.mrkirby153.bridgebot.discord
 
-import me.mrkirby153.bridgebot.discord.redis.RedisConnector
 import net.dv8tion.jda.core.AccountType
 import net.dv8tion.jda.core.JDA
 import net.dv8tion.jda.core.JDABuilder
@@ -13,15 +12,10 @@ class BridgeBot(val properties: Properties) : ListenerAdapter() {
 
     val jda: JDA
 
-    val redis: RedisConnector
-
     val owner = properties.getProperty("owner_id") ?: ""
 
     init {
         jda = buildJDA(properties.getProperty("api_token"))
-        redis = RedisConnector(properties.getProperty("redis_host", "localhost"), properties.getProperty("redis_port", "6379").toInt(),
-                properties.getProperty("redis_password", null), properties.getProperty("redis_db", "0").toInt())
-        redis.listen(jda)
     }
 
     private fun buildJDA(token: String) = JDABuilder(AccountType.BOT).apply {
@@ -41,8 +35,8 @@ class BridgeBot(val properties: Properties) : ListenerAdapter() {
         }
         if(event.message.rawContent.equals("%%list", true)){
             val obj = JSONObject().put("action", "playercount")
-            redis.publish("bridge:${event.guild.id}.${event.channel.id}", obj.toString())
+//            redis.publish("bridge:${event.guild.id}.${event.channel.id}", obj.toString())
         }
-        redis.publish(event.message)
+//        redis.publish(event.message)
     }
 }

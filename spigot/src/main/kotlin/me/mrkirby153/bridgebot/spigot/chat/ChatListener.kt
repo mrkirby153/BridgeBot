@@ -1,6 +1,7 @@
 package me.mrkirby153.bridgebot.spigot.chat
 
 import me.mrkirby153.bridgebot.spigot.Bridge
+import me.mrkirby153.bridgebot.spigot.sendChatMessage
 import org.bukkit.ChatColor
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
@@ -16,7 +17,7 @@ class ChatListener(val plugin: Bridge) : Listener {
     fun onChat(event: AsyncPlayerChatEvent) {
         ChatHandler.getChannels().forEach { chan ->
             if (chan.twoWay) {
-                plugin.redisConnector.sendChatMessage(chan.server, chan.channel, event.player, ChatColor.stripColor(event.message))
+                plugin.redisConnector.sendChatMessage(chan.server, chan.channel, event.player.name, ChatColor.stripColor(event.message))
             }
         }
     }

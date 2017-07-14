@@ -5,7 +5,7 @@ import org.json.JSONObject
 import org.json.JSONTokener
 import redis.clients.jedis.JedisPubSub
 
-class RedisHandler : JedisPubSub() {
+class SpigotDiscordHandler : JedisPubSub() {
 
     override fun onPMessage(pattern: String, channel: String, message: String) {
         if(!channel.startsWith("bridge"))
