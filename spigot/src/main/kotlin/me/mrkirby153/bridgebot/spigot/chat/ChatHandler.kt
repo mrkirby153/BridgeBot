@@ -25,8 +25,10 @@ object ChatHandler {
             val server = cfg.getString("channels.$key.server")
             val channel = cfg.getString("channels.$key.channel")
             val twoWay = cfg.getBoolean("channels.$key.twoWay")
+            val joins = cfg.getBoolean("channels.$key.joins")
+            val deaths = cfg.getBoolean("channels.$key.deaths")
 
-            val chan = Channel(prefix, nameColor, nameFormat, textColor, server, channel, twoWay)
+            val chan = Channel(prefix, nameColor, nameFormat, textColor, server, channel, twoWay, joins, deaths)
             plugin.logger.info("Loaded channel $chan")
             channels["$server.$channel"] = chan
         }
@@ -73,5 +75,5 @@ object ChatHandler {
 
 
     data class Channel(val prefix: String, val nameColor: ChatColor, val nameFormat: String, val textColor: ChatColor,
-                       val server: String, val channel: String, val twoWay: Boolean)
+                       val server: String, val channel: String, val twoWay: Boolean, val sendJoin: Boolean, val sendDeaths: Boolean)
 }

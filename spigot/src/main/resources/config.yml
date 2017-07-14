@@ -9,6 +9,8 @@
 # server:       The server to listen on
 # channel:      The channel to listen on
 # twoWay:         True to send messages back to Discord
+# joins:        True to send player joins/quits back to discord
+# deaths:       True to send player deaths back to discord
 #
 # ===================
 channels:
@@ -20,6 +22,8 @@ channels:
     server: "000000000"
     channel: "0000000000"
     twoWay: true
+    joins: false
+    deaths: true
 
 # ===========
 #
