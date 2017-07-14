@@ -8,7 +8,6 @@ repositories {
 }
 
 dependencies {
-    shadow project(":DiscordBridgeBot-discord_core")
     shadow "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
     shadow 'net.dv8tion:JDA:3.1.0_204'
 
@@ -28,9 +27,6 @@ buildscript {
 }
 
 apply plugin: 'kotlin'
-apply plugin: 'application'
-
-mainClassName = 'me.mrkirby153.bridgebot.discord.Bot'
 
 compileKotlin {
     kotlinOptions {

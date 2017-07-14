@@ -1,11 +1,11 @@
 package me.mrkirby153.bridgebot.discord.redis
 
-import me.mrkirby153.bridgebot.discord.Bot
+import net.dv8tion.jda.core.JDA
 import org.json.JSONObject
 import org.json.JSONTokener
 import redis.clients.jedis.JedisPubSub
 
-class RedisHandler() : JedisPubSub() {
+class RedisHandler(private val jda: JDA) : JedisPubSub() {
 
     override fun onPMessage(pattern: String, channel: String, message: String) {
         if (!(channel.startsWith("action") || channel.startsWith("bridge")))
@@ -25,7 +25,7 @@ class RedisHandler() : JedisPubSub() {
             when (action) {
                 "playercount_resp" -> {
                     val players = json.getJSONArray("players")
-                    Bot.bot.jda.getGuildById(server)?.getTextChannelById(chan)?.sendMessage(buildString {
+                   jda.getGuildById(server)?.getTextChannelById(chan)?.sendMessage(buildString {
                         append("Online Players ")
                         append("(${players.length()}): ")
                         if (players.length() > 0)
@@ -46,7 +46,7 @@ class RedisHandler() : JedisPubSub() {
                 return
             val author = json.optString("author") ?: null
             val m = json.getString("message")
-            Bot.bot.jda.getGuildById(server)?.getTextChannelById(chan)?.sendMessage(buildString {
+            jda.getGuildById(server)?.getTextChannelById(chan)?.sendMessage(buildString {
                 if(author != null && author.isNotEmpty())
                     append("**<$author>** ")
                 append(m)

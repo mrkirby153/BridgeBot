@@ -21,7 +21,7 @@ class BridgeBot(val properties: Properties) : ListenerAdapter() {
         jda = buildJDA(properties.getProperty("api_token"))
         redis = RedisConnector(properties.getProperty("redis_host", "localhost"), properties.getProperty("redis_port", "6379").toInt(),
                 properties.getProperty("redis_password", null), properties.getProperty("redis_db", "0").toInt())
-        redis.listen()
+        redis.listen(jda)
     }
 
     private fun buildJDA(token: String) = JDABuilder(AccountType.BOT).apply {
