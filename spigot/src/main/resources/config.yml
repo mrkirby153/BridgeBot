@@ -28,9 +28,21 @@ channels:
 # ===========
 #
 # Connection to the redis server for incoming message relaying
+# If disabled, an API token MUST be specified
 #
 # ===========
 redis:
+  enabled: false
   host: localhost
   port: 6379
   password: ''
+
+# ========
+#
+# token: The token for the Discord robot if the robot is operating in standalone mode (redis.enabled = false)
+# owner: The Discord id of the owner of the robot
+#
+# ========
+bot:
+  token: ''
+  owner: '000000000'

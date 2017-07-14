@@ -1,7 +1,6 @@
 package me.mrkirby153.bridgebot.spigot.chat
 
 import me.mrkirby153.bridgebot.spigot.Bridge
-import me.mrkirby153.bridgebot.spigot.sendChatMessage
 import org.bukkit.ChatColor
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
@@ -17,7 +16,7 @@ class ChatListener(val plugin: Bridge) : Listener {
     fun onChat(event: AsyncPlayerChatEvent) {
         ChatHandler.getChannels().forEach { chan ->
             if (chan.twoWay) {
-                plugin.redisConnector.sendChatMessage(chan.server, chan.channel, event.player.name, ChatColor.stripColor(event.message))
+                plugin.sendToDiscord(chan, event.player.name, ChatColor.stripColor(event.message))
             }
         }
     }
@@ -26,7 +25,7 @@ class ChatListener(val plugin: Bridge) : Listener {
     fun onDeath(event: PlayerDeathEvent) {
         ChatHandler.getChannels().forEach { chan ->
             if (chan.twoWay && chan.sendDeaths) {
-                plugin.redisConnector.sendChatMessage(chan.server, chan.channel, null, ChatColor.stripColor(event.deathMessage))
+                plugin.sendToDiscord(chan, null, ChatColor.stripColor(event.deathMessage))
             }
         }
     }
@@ -35,7 +34,7 @@ class ChatListener(val plugin: Bridge) : Listener {
     fun onJoin(event: PlayerJoinEvent) {
         if (event.joinMessage.isNotEmpty())
             ChatHandler.getChannels().filter { it.twoWay && it.sendJoin }.forEach { chan ->
-                plugin.redisConnector.sendChatMessage(chan.server, chan.channel, null,ChatColor.stripColor(event.joinMessage))
+                plugin.sendToDiscord(chan, null,ChatColor.stripColor(event.joinMessage))
             }
     }
 
@@ -43,7 +42,7 @@ class ChatListener(val plugin: Bridge) : Listener {
     fun onLeave(event: PlayerQuitEvent){
         if(event.quitMessage.isNotEmpty())
             ChatHandler.getChannels().filter { it.twoWay && it.sendJoin }.forEach{ chan ->
-                plugin.redisConnector.sendChatMessage(chan.server, chan.channel, null, ChatColor.stripColor(event.quitMessage))
+                plugin.sendToDiscord(chan, null, ChatColor.stripColor(event.quitMessage))
             }
     }
 }

@@ -5,6 +5,8 @@ import org.json.JSONObject
 
 class RedisBotHandler(val redis: RedisConnector) : BotHandler {
 
+    override val allowShutdown: Boolean = true
+
     override fun sendDiscordToMinecraft(channel: String, server: String, author: String, message: String) {
         redis.publish("bridge:$server.$channel", JSONObject().put("author", author).put("content", message).toString())
     }

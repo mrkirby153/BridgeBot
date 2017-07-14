@@ -6,16 +6,13 @@ import net.dv8tion.jda.core.JDABuilder
 import net.dv8tion.jda.core.entities.MessageChannel
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent
 import net.dv8tion.jda.core.hooks.ListenerAdapter
-import java.util.*
 
-class BridgeBot(properties: Properties, val handler: BotHandler) : ListenerAdapter() {
+class BridgeBot(val owner: String, private val token: String, val handler: BotHandler) : ListenerAdapter() {
 
     val jda: JDA
 
-    val owner = properties.getProperty("owner_id") ?: ""
-
     init {
-        jda = buildJDA(properties.getProperty("api_token"))
+        jda = buildJDA(token)
     }
 
     private fun buildJDA(token: String) = JDABuilder(AccountType.BOT).apply {
@@ -28,7 +25,7 @@ class BridgeBot(properties: Properties, val handler: BotHandler) : ListenerAdapt
             return
         if(event.author == jda.selfUser)
             return
-        if(event.message.rawContent == "%%shutdown" && event.author.id == this.owner) {
+        if(event.message.rawContent == "%%shutdown" && event.author.id == this.owner && handler.allowShutdown) {
             event.message.channel.sendMessage("Shutting down... :wave:").complete()
             jda.shutdown()
             return

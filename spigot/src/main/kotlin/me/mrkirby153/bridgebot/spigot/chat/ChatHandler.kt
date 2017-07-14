@@ -46,7 +46,7 @@ object ChatHandler {
                 Bukkit.getOnlinePlayers().forEach {
                     obj.append("players", it.name)
                 }
-                plugin.redisConnector.publish("action:$server.$channel", obj.toString())
+                plugin.redisConnector?.publish("action:$server.$channel", obj.toString())
             }
             return
         }
